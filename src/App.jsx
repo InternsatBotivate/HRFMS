@@ -29,7 +29,7 @@ import EMIManagement from './pages/EMIManagement';
 
 function App() {
   return (
-    <div className="gradient-bg min-h-screen">
+    <div className="bg-white min-h-screen">
       <Router>
         <Toaster position="top-right" />
         <Routes>

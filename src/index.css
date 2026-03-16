@@ -10,7 +10,7 @@ body {
 .gradient-bg {
   background: radial-gradient(circle, #3b82f6, #8b5cf6);
 }
-
+x
 .glass-effect {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
