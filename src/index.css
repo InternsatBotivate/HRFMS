@@ -10,7 +10,24 @@ body {
 .gradient-bg {
   background: radial-gradient(circle, #3b82f6, #8b5cf6);
 }
-x
+
+.colorful-border {
+  position: relative;
+  background: white;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+
+.colorful-border::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -1;
+  margin: -1px;
+  border-radius: inherit;
+  background: linear-gradient(to right, #4f46e5, #9333ea, #db2777);
+}
+
 .glass-effect {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -31,6 +48,7 @@ x
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
