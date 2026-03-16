@@ -24,6 +24,8 @@ import Attendancedaily from './pages/Attendancedaily';
 import Report from './pages/Report';
 import Payroll from './pages/Payroll';
 import MisReport from './pages/MisReport';
+import LeavePolicy from './pages/LeavePolicy';
+import EMIManagement from './pages/EMIManagement';
 
 function App() {
   return (
@@ -49,6 +51,7 @@ function App() {
             <Route path="employee" element={<Employee />} />
             <Route path="my-profile" element={<MyProfile />} />
             <Route path="my-attendance" element={<MyAttendance />} />
+            <Route path="leave-policy" element={<LeavePolicy />} />
             <Route path="leave-request" element={<LeaveRequest />} />
             <Route path="my-salary" element={<MySalary />} />
             <Route path="company-calendar" element={<CompanyCalendar />} />
@@ -58,6 +61,7 @@ function App() {
               <Route path="report" element={<Report />} />
               <Route path="payroll" element={<Payroll />} />
               <Route path="misreport" element={<MisReport />} />
+              <Route path="emi-management" element={<EMIManagement />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

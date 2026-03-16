@@ -25,7 +25,8 @@ import {
   NotebookPen,
   Book,
   BadgeDollarSign,
-  BookPlus
+  BookPlus,
+  CreditCard
 } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 
@@ -54,6 +55,8 @@ const Sidebar = ({ onClose }) => {
     { path: '/after-leaving-work', icon: UserMinus, label: 'After Leaving Work' },
     { path: '/employee', icon: Users, label: 'Employee' },
     { path: '/leave-management', icon: BookPlus, label: 'Leave Management' },
+    { path: '/leave-policy', icon: BookPlus, label: 'Leave Policy & Overtime' },
+    { path: '/emi-management', icon: CreditCard, label: 'EMI Management' },
     {
       type: 'dropdown',
       icon: Book,
@@ -61,7 +64,7 @@ const Sidebar = ({ onClose }) => {
       isOpen: attendanceOpen,
       toggle: () => setAttendanceOpen(!attendanceOpen),
       items: [
-        { path: '/attendance', label: 'Monthly' },
+        { path: '/attendance', label: 'Monthly' }, 
         { path: '/attendancedaily', label: 'Daily' }
       ]
     },
@@ -81,10 +84,61 @@ const Sidebar = ({ onClose }) => {
 
   const menuItems = user?.Admin === 'Yes' ? adminMenuItems : employeeMenuItems;
 
-const SidebarContent = ({ onClose, isCollapsed = false }) => (
+  return (
+    <>
+      {/* Mobile menu button - visible only on mobile */}
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-indigo-900 text-white rounded-md shadow-md"
+        onClick={() => setIsOpen(true)}
+      >
+        <Menu size={24} />
+      </button>
+
+      {/* Tablet menu button - visible on tablet (hidden on mobile and desktop) */}
+      <button
+        className="hidden md:block lg:hidden fixed top-4 left-4 z-50 p-2 bg-indigo-900 text-white rounded-md shadow-md"
+        onClick={() => setIsOpen(true)}
+      >
+        <Menu size={24} />
+      </button>
+
+      {/* Desktop Sidebar - full width on desktop */}
+      <div className="hidden lg:block fixed left-0 top-0 h-full">
+        <SidebarContent menuItems={menuItems} user={user} handleLogout={handleLogout} />
+      </div>
+
+      {/* Tablet Sidebar - collapsible */}
+      <div className={`hidden md:block lg:hidden fixed inset-0 z-40 transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50"
+          onClick={() => setIsOpen(false)}
+        />
+        <div className={`fixed left-0 top-0 h-full z-50 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
+         <SidebarContent menuItems={menuItems} user={user} handleLogout={handleLogout} onClose={() => setIsOpen(false)} />
+        </div>
+      </div>
+
+      {/* Mobile Sidebar - collapsible */}
+      <div className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50"
+          onClick={() => setIsOpen(false)}
+        />
+        <div className={`fixed left-0 top-0 h-full z-50 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
+        <SidebarContent menuItems={menuItems} user={user} handleLogout={handleLogout} onClose={() => setIsOpen(false)} />
+        </div>
+      </div>
+
+      {/* Add padding to main content when sidebar is open on desktop */}
+      <div className="lg:pl-64"></div>
+    </>
+  );
+};
+
+const SidebarContent = ({ onClose, isCollapsed = false, menuItems, user, handleLogout }) => (
   <div className={`flex flex-col h-full ${isCollapsed ? 'w-16' : 'w-64'} bg-indigo-900 text-white`}>
     {/* Header */}
-    <div className="flex items-center justify-between p-5 border-b border-indigo-800">
+    <div className="flex items-center justify-between p-5 border-b border-indigo-800 shrink-0">
       {!isCollapsed && (
         <h1 className="text-xl font-bold flex items-center gap-2 text-white">
           <Users size={24} />
@@ -171,7 +225,7 @@ const SidebarContent = ({ onClose, isCollapsed = false }) => (
     </nav>
 
     {/* Footer - Always visible */}
-    <div className="p-4 border-t border-white border-opacity-20">
+    <div className="p-4 border-t border-white border-opacity-20 shrink-0">
       <div className="flex items-center space-x-4 mb-4">
         <div className="flex items-center space-x-2 cursor-pointer">
           <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center">
@@ -198,56 +252,5 @@ const SidebarContent = ({ onClose, isCollapsed = false }) => (
     </div>
   </div>
 );
-
-  return (
-    <>
-      {/* Mobile menu button - visible only on mobile */}
-      <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-indigo-900 text-white rounded-md shadow-md"
-        onClick={() => setIsOpen(true)}
-      >
-        <Menu size={24} />
-      </button>
-
-      {/* Tablet menu button - visible on tablet (hidden on mobile and desktop) */}
-      <button
-        className="hidden md:block lg:hidden fixed top-4 left-4 z-50 p-2 bg-indigo-900 text-white rounded-md shadow-md"
-        onClick={() => setIsOpen(true)}
-      >
-        <Menu size={24} />
-      </button>
-
-      {/* Desktop Sidebar - full width on desktop */}
-      <div className="hidden lg:block fixed left-0 top-0 h-full">
-        <SidebarContent />
-      </div>
-
-      {/* Tablet Sidebar - collapsible */}
-      <div className={`hidden md:block lg:hidden fixed inset-0 z-40 transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50"
-          onClick={() => setIsOpen(false)}
-        />
-        <div className={`fixed left-0 top-0 h-full z-50 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
-         <SidebarContent  />
-        </div>
-      </div>
-
-      {/* Mobile Sidebar - collapsible */}
-      <div className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50"
-          onClick={() => setIsOpen(false)}
-        />
-        <div className={`fixed left-0 top-0 h-full z-50 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
-        <SidebarContent />
-        </div>
-      </div>
-
-      {/* Add padding to main content when sidebar is open on desktop */}
-      <div className="lg:pl-64"></div>
-    </>
-  );
-};
 
 export default Sidebar;
